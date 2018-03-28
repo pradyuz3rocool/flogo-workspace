@@ -7,8 +7,19 @@
   "author": "Your Name <you.name@example.org>",
   "inputs":[
     {
-      "name": "ConnectionString",
-      "type": "string"
+      "name": "sharedAccessKey",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "hostName",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "deviceID",
+      "type": "string",
+      "required": true
     }
   ],
   "outputs": [

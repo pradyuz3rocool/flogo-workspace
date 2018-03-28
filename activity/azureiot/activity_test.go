@@ -4,8 +4,9 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-contrib/action/flow/test"
+	"github.com/TIBCOSoftware/flogo-lib/core/activity"
+	"github.com/stretchr/testify/assert"
 )
 
 var activityMetadata *activity.Metadata
@@ -14,7 +15,7 @@ func getActivityMetadata() *activity.Metadata {
 
 	if activityMetadata == nil {
 		jsonMetadataBytes, err := ioutil.ReadFile("activity.json")
-		if err != nil{
+		if err != nil {
 			panic("No Json Metadata found for activity.json path")
 		}
 
@@ -49,7 +50,13 @@ func TestEval(t *testing.T) {
 
 	//setup attrs
 
+	tc.SetInput("sharedAccessKey", "4X9XgcLcu1RjiP7kq7oWVffq+e1jXAcdrOKcC71DM8o=")
+	tc.SetInput("hostName", "myhub.azure-devices.net")
+	tc.SetInput("deviceID", "raspi-isteer")
+
 	act.Eval(tc)
 
 	//check result attr
+	result := tc.GetOutput("result")
+	assert.Equal(t, result, "Trying to conenct to device raspi-isteer using hostname: myhub.azure-devices.net and sharedAccesskey as 4X9XgcLcu1RjiP7kq7oWVffq+e1jXAcdrOKcC71DM8o=")
 }
