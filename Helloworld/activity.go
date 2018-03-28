@@ -1,4 +1,4 @@
-package Helloworld
+package helloworld
 
 import (
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
