@@ -50,13 +50,11 @@ func TestEval(t *testing.T) {
 
 	//setup attrs
 
-	tc.SetInput("sharedAccessKey", "4X9XgcLcu1RjiP7kq7oWVffq+e1jXAcdrOKcC71DM8o=")
-	tc.SetInput("hostName", "myhub.azure-devices.net")
-	tc.SetInput("deviceID", "raspi-isteer")
+	tc.SetInput("connectionString", "HostName=HomeAutoHub.azure-devices.net;DeviceId=raspi;SharedAccessKey=IHx8ac6Bad4vHbv4I0HiJkhgeCNZhuzQdnllCAMSR+o=")
 
 	act.Eval(tc)
 
 	//check result attr
 	result := tc.GetOutput("result")
-	assert.Equal(t, result, "Trying to conenct to device raspi-isteer using hostname: myhub.azure-devices.net and sharedAccesskey as 4X9XgcLcu1RjiP7kq7oWVffq+e1jXAcdrOKcC71DM8o=")
+	assert.Equal(t, result, "Trying to connect to device using connection string on Azure IOTHub:HostName=HomeAutoHub.azure-devices.net;DeviceId=raspi;SharedAccessKey=IHx8ac6Bad4vHbv4I0HiJkhgeCNZhuzQdnllCAMSR+o=")
 }
