@@ -23,21 +23,21 @@ const (
 	apiVersion         string = "2016-11-14"
 )
 
-type sharedAccessKey = string
-type sharedAccessKeyName = string
-type hostName = string
-type deviceID = string
+type sharedAccessKey string
+type sharedAccessKeyName string
+type hostName string
+type deviceID string
 
 // IotHubHTTPClient is a simple client to connect to Azure IoT Hub
 type IotHubHTTPClient struct {
-	sharedAccessKeyName sharedAccessKeyName
-	sharedAccessKey     sharedAccessKey
-	hostName            hostName
-	deviceID            deviceID
+	sharedAccessKeyName string
+	sharedAccessKey     string
+	hostName            string
+	deviceID            string
 	client              *http.Client
 }
 
-func parseConnectionString(connString string) (hostName, sharedAccessKey, sharedAccessKeyName, deviceID, error) {
+func parseConnectionString(connString string) (string, string, string, string, error) {
 	url, err := url.ParseQuery(connString)
 	if err != nil {
 		return "", "", "", "", err
@@ -48,7 +48,11 @@ func parseConnectionString(connString string) (hostName, sharedAccessKey, shared
 	k := tryGetKeyByName(url, "SharedAccessKey")
 	d := tryGetKeyByName(url, "DeviceId")
 
-	return hostName(h), sharedAccessKey(k), sharedAccessKeyName(kn), deviceID(d), nil
+	hostName := h
+	sharedAccessKeyName := kn
+	sharedAccessKey := k
+	deviceID := d
+	return hostName, sharedAccessKeyName, sharedAccessKey, deviceID, nil
 }
 
 func tryGetKeyByName(v url.Values, key string) string {
