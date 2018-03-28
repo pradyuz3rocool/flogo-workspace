@@ -41,7 +41,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	if err != nil {
 		log.Error("Error creating http client from connection string", err)
 	}
-	resp, status := client.ListDeviceIDs(10)
+	resp, status := client.GetDeviceID(client.deviceID)
 	//resp, status := client.GetDeviceID(client.deviceID)
 	//result := fmt.Sprintf("%s is the response, %s is the status", resp, status)
 	context.SetOutput(ovResult, resp)
