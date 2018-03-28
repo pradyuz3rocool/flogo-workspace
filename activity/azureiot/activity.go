@@ -1,11 +1,8 @@
-package helloworld
+package azureiot
 
 import (
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
-	"github.com/TIBCOSoftware/flogo-lib/logger"
 )
-
-var log = logger.GetLogger("activity-helloworld")
 
 // MyActivity is a stub for your Activity implementation
 type MyActivity struct {
@@ -23,13 +20,9 @@ func (a *MyActivity) Metadata() *activity.Metadata {
 }
 
 // Eval implements activity.Activity.Eval
-func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
+func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 
 	// do eval
-	name := context.GetInput("name").(string)
-	salutation := context.GetInput("salutation").(string)
 
-	log.Debug("The flogo engine says [%s] to [%s]", salutation, name)
-	context.SetOutput("result", "The flogo engine says"+salutation+" to "+name)
 	return true, nil
 }

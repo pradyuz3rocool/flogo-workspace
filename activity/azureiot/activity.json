@@ -1,17 +1,14 @@
 {
-  "name": "Helloworld",
+  "name": "azureiot",
   "version": "0.0.1",
   "type": "flogo:activity",
+  "ref":"github.com/pradyuz3rocool/flogo-workspace/activity/azureiot",
   "description": "activity description",
-  "author": "Pradyumna Chakicherla <pradyumna.chakicherla@isteer.com>",
+  "author": "Your Name <you.name@example.org>",
   "inputs":[
     {
-      "name": "salutation",
+      "name": "ConnectionString",
       "type": "string"
-    },
-    {
-      "name":"name",
-      "type":"string"
     }
   ],
   "outputs": [
