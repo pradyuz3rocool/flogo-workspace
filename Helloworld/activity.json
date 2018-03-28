@@ -1,0 +1,23 @@
+{
+  "name": "Helloworld",
+  "version": "0.0.1",
+  "type": "flogo:activity",
+  "description": "activity description",
+  "author": "Pradyumna Chakicherla <pradyumna.chakicherla@isteer.com>",
+  "inputs":[
+    {
+      "name": "salutation",
+      "type": "string"
+    },
+    {
+      "name":"name",
+      "type":"string"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "string"
+    }
+  ]
+}
