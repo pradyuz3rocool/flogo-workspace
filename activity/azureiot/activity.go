@@ -1,8 +1,6 @@
 package azureiot
 
 import (
-	"fmt"
-
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 )
@@ -12,7 +10,8 @@ var log = logger.GetLogger("activity-azureiot")
 const (
 	ivconnectionString = "connectionString"
 
-	ovresult = "result"
+	ovResult = "result"
+	ovStatus = "status"
 )
 
 // MyActivity is a stub for your Activity implementation
@@ -43,7 +42,8 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 		log.Error("Error creating http client from connection string", err)
 	}
 	resp, status := client.GetDeviceID(client.deviceID)
-	result := fmt.Sprintf("%s is the response, %s is the status", resp, status)
-	context.SetOutput("result", result)
+	//result := fmt.Sprintf("%s is the response, %s is the status", resp, status)
+	context.SetOutput(ovResult, resp)
+	context.SetOutput(ovStatus, status)
 	return true, nil
 }
