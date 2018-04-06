@@ -43,11 +43,11 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	if err != nil {
 		log.Error("Error creating http client from connection string", err)
 	}
-	resp, status := client.GetDeviceID(client.deviceID)
+	//resp, status := client.GetDeviceID(client.deviceID)
 
-	for i := 0; i < 10; i++ {
-		resp, status = client.SendMessage(fmt.Sprintf(`{"count":%d}`, i))
-	}
+	//for i := 0; i < 10; i++ {
+	resp, status := client.SendMessage(fmt.Sprintf(`{"count":10}`))
+	//}
 	context.SetOutput(ovResult, resp)
 	context.SetOutput(ovStatus, status)
 	return true, nil
