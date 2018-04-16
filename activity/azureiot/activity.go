@@ -46,9 +46,9 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	}
 
 	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=2016-11-14", client.hostName, client.deviceID)
-	resp, status := client.performRequest("GET", url, "")
-	context.SetOutput(ovResult, resp)
-	context.SetOutput(ovStatus, status)
+	//resp, status := client.performRequest("GET", url, "")
+	context.SetOutput(ovResult, url)
+	context.SetOutput(ovStatus, client.deviceID)
 	return true, nil
 }
 
