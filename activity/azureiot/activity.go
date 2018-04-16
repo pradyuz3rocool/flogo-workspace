@@ -43,7 +43,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 		log.Error("Error creating http client from connection string", err)
 	}
 
-	resp, status := client.GetDeviceID(client.deviceID)
+	resp, status := client.ReceiveMessage()
 
 	//url := fmt.Sprintf("%s/devices/%s/messages/events?api-version=", client.hostName, client.deviceID)
 
