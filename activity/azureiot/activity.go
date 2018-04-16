@@ -1,8 +1,6 @@
 package azureiot
 
 import (
-	"fmt"
-
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 )
@@ -11,11 +9,6 @@ var log = logger.GetLogger("activity-azureiot")
 
 const (
 	ivconnectionString = "connectionString"
-
-	maxIdleConnections int = 100
-	requestTimeout     int = 10
-	tokenValidSecs     int = 3600
-	apiVersion             = "2016-11-14"
 
 	ovResult = "result"
 	ovStatus = "status"
@@ -44,16 +37,21 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	connectionString := context.GetInput(ivconnectionString).(string)
 
 	log.Debug("The connection string to device is [%s]", connectionString)
+
 	client, err := NewIotHubHTTPClientFromConnectionString(connectionString)
 	if err != nil {
 		log.Error("Error creating http client from connection string", err)
 	}
 
-	//resp, status := client.SendMessage("test message")
+	resp, status := client.GetDeviceID(client.deviceID)
 
-	url := fmt.Sprintf("%s/devices/%s/messages/events?api-version=%s", client.hostName, client.deviceID, apiVersion)
+	//url := fmt.Sprintf("%s/devices/%s/messages/events?api-version=", client.hostName, client.deviceID)
 
-	context.SetOutput(ovResult, url)
-	context.SetOutput(ovStatus, client.hostName)
+	context.SetOutput(ovResult, resp)
+	context.SetOutput(ovStatus, status)
 	return true, nil
+}
+
+func parseConnString(connString string) {
+
 }

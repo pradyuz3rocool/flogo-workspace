@@ -17,10 +17,10 @@ import (
 )
 
 const (
-// maxIdleConnections int    = 100
-// requestTimeout     int    = 10
-// tokenValidSecs     int    = 3600
-// apiVersion         string = "2016-11-14"
+	maxIdleConnections int    = 100
+	requestTimeout     int    = 10
+	tokenValidSecs     int    = 3600
+	apiVersion         string = "2016-11-14"
 )
 
 type sharedAccessKey string
