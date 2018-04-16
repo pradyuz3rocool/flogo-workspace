@@ -47,7 +47,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 
 	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=2016-11-14", client.hostName, client.deviceID)
 	resp := client.buildSasToken(url)
-	status := "200"
+	status := "https://" + url
 	context.SetOutput(ovResult, resp)
 	context.SetOutput(ovStatus, status)
 	return true, nil
