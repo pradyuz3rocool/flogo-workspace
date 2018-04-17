@@ -52,6 +52,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	hostName, sharedAccessKey, sharedAccessKeyName, deviceID, err := parseConnectionString(connectionString)
 	url := fmt.Sprintf("https://%s/devices/%s/messages/deviceBound?api-version=2016-11-14", hostName, deviceID)
 	SaS := createSharedAccessToken("<ServiceBusURL>", "<PolicyName>", "<SecretKey>")
+
 	context.SetOutput(ovResult, hostName+sharedAccessKey)
 	context.SetOutput(ovStatus, sharedAccessKeyName+deviceID)
 	context.SetOutput(ovURL, url)
@@ -102,5 +103,6 @@ func createSharedAccessToken(uri string, saName string, saKey string) string {
 	hmacString := template.URLQueryEscaper(base64.StdEncoding.EncodeToString(hmac.Sum(nil)))
 
 	result := "SharedAccessSignature sr=" + encoded + "&sig=" + hmacString + "&se=" + strconv.Itoa(int(ts)) + "&skn=" + saName
+	log.Debug(result)
 	return result
 }
