@@ -10,7 +10,9 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -21,45 +23,41 @@ const (
 	apiVersion         string = "2016-11-14"
 )
 
-type sharedAccessKey string
-type sharedAccessKeyName string
-type hostName string
-type deviceID string
+type sharedAccessKey = string
+type sharedAccessKeyName = string
+type hostName = string
+type deviceID = string
 
 // IotHubHTTPClient is a simple client to connect to Azure IoT Hub
 type IotHubHTTPClient struct {
-	sharedAccessKeyName string
-	sharedAccessKey     string
-	hostName            string
-	deviceID            string
+	sharedAccessKeyName sharedAccessKeyName
+	sharedAccessKey     sharedAccessKey
+	hostName            hostName
+	deviceID            deviceID
 	client              *http.Client
 }
 
-// func parseConnectionString(connString string) (string, string, string, string, error) {
-// 	url, err := url.ParseQuery(connString)
-// 	if err != nil {
-// 		return "", "", "", "", err
-// 	}
+func parseConnectionString(connString string) (hostName, sharedAccessKey, sharedAccessKeyName, deviceID, error) {
+	url, err := url.ParseQuery(connString)
+	if err != nil {
+		return "", "", "", "", err
+	}
 
-// 	h := tryGetKeyByName(url, "HostName")
-// 	kn := tryGetKeyByName(url, "SharedAccessKeyName")
-// 	k := tryGetKeyByName(url, "SharedAccessKey")
-// 	d := tryGetKeyByName(url, "DeviceId")
+	h := tryGetKeyByName(url, "HostName")
+	kn := tryGetKeyByName(url, "SharedAccessKeyName")
+	k := tryGetKeyByName(url, "SharedAccessKey")
+	d := tryGetKeyByName(url, "DeviceId")
 
-// 	hostName := h
-// 	sharedAccessKeyName := kn
-// 	sharedAccessKey := k
-// 	deviceID := d
-// 	return hostName, sharedAccessKeyName, sharedAccessKey, deviceID, nil
-// }
+	return hostName(h), sharedAccessKey(k), sharedAccessKeyName(kn), deviceID(d), nil
+}
 
-// func tryGetKeyByName(v url.Values, key string) string {
-// 	if len(v[key]) == 0 {
-// 		return ""
-// 	}
+func tryGetKeyByName(v url.Values, key string) string {
+	if len(v[key]) == 0 {
+		return ""
+	}
 
-// 	return strings.Replace(v[key][0], " ", "+", -1)
-// }
+	return strings.Replace(v[key][0], " ", "+", -1)
+}
 
 // NewIotHubHTTPClient is a constructor of IutHubClient
 func NewIotHubHTTPClient(hostName string, sharedAccessKeyName string, sharedAccessKey string, deviceID string) *IotHubHTTPClient {
@@ -154,47 +152,24 @@ func (c *IotHubHTTPClient) buildSasToken(uri string) string {
 
 	encodedSignature := template.URLQueryEscaper(base64.StdEncoding.EncodeToString(mac.Sum(nil)))
 
-	return fmt.Sprintf("SharedAccessSignature sig=%s&se=%d&skn=%s&sr=%s", encodedSignature, timestamp, c.sharedAccessKeyName, encodedURI)
+	if c.sharedAccessKeyName != "" {
+		return fmt.Sprintf("SharedAccessSignature sig=%s&se=%d&skn=%s&sr=%s", encodedSignature, timestamp, c.sharedAccessKeyName, encodedURI)
+	}
 
+	return fmt.Sprintf("SharedAccessSignature sig=%s&se=%d&sr=%s", encodedSignature, timestamp, encodedURI)
 }
 
-// func ComputeHmac256(message string, secret string) string {
-// 	data, _ := base64.StdEncoding.DecodeString(secret)
-// 	key := []byte(data)
-// 	h := hmac.New(sha256.New, key)
-// 	h.Write([]byte(message))
-// 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
-// }
-
-// func GenerateSasToken(resourceUri string, signingKey string, expiresInMins string, policyName string) string {
-// 	uri := template.URLQueryEscaper(resourceUri)
-
-// 	duration, _ := strconv.Atoi(expiresInMins)
-// 	expire := time.Now().Add(time.Duration(duration) * time.Minute)
-// 	secs := expire.Unix()
-// 	signed := uri + "\n" + strconv.FormatInt(secs, 10)
-
-// 	val := ComputeHmac256(signed, signingKey)
-// 	encodedVal := template.URLQueryEscaper(val)
-
-// 	token := "SharedAccessSignature sr=" + uri + "&sig=" + encoded_val + "&se=" + strconv.FormatInt(secs, 10)
-// 	if len(policyName) > 0 {
-// 		token += "&skn=" + policyName
-// 	}
-
-// 	return token
-// }
 func (c *IotHubHTTPClient) performRequest(method string, uri string, data string) (string, string) {
 	token := c.buildSasToken(uri)
-	log.Debug("%s https://%s\n", method, uri)
-	log.Debug(data)
+	//log.("%s https://%s\n", method, uri)
+	//log.Printf(data)
 	req, _ := http.NewRequest(method, "https://"+uri, bytes.NewBufferString(data))
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "golang-iot-client")
 	req.Header.Set("Authorization", token)
 
-	log.Debug("Authorization:", token)
+	//log.Println("Authorization:", token)
 
 	if method == "DELETE" {
 		req.Header.Set("If-Match", "*")

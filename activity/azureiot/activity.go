@@ -1,16 +1,6 @@
 package azureiot
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/base64"
-	"fmt"
-	"html/template"
-	"net/url"
-	"strconv"
-	"strings"
-	"time"
-
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 )
@@ -20,8 +10,8 @@ var log = logger.GetLogger("activity-azureiot")
 const (
 	ivconnectionString = "connectionString"
 
-	ovURL   = "url"
-	ovToken = "SAS Token"
+	ovResult = "result"
+	ovStatus = "status"
 )
 
 // MyActivity is a stub for your Activity implementation
@@ -47,58 +37,14 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	connectionString := context.GetInput(ivconnectionString).(string)
 
 	log.Debug("The connection string to device is [%s]", connectionString)
-	hostName, sharedAccessKey, sharedAccessKeyName, deviceID, err := parseConnectionString(connectionString)
-	log.Info("sharedAccessKeyName", sharedAccessKeyName)
-	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=2016-11-14", hostName, deviceID)
-	SaS := createSharedAccessToken(url, sharedAccessKeyName, sharedAccessKey)
 
-	context.SetOutput(ovURL, "https://"+url)
-	context.SetOutput(ovToken, SaS)
-	return true, nil
-}
-
-func parseConnectionString(connString string) (string, string, string, string, error) {
-	url, err := url.ParseQuery(connString)
+	client, err := NewIotHubHTTPClientFromConnectionString(connectionString)
 	if err != nil {
-		return "", "", "", "", err
+		log.Error("Error creating http client from connection string", err)
 	}
+	resp, status := client.GetDeviceID(client.deviceID)
 
-	h := tryGetKeyByName(url, "HostName")
-	kn := tryGetKeyByName(url, "SharedAccessKeyName")
-	k := tryGetKeyByName(url, "SharedAccessKey")
-	d := tryGetKeyByName(url, "DeviceId")
-
-	hostName := h
-	sharedAccessKeyName := kn
-	sharedAccessKey := k
-	deviceID := d
-	return hostName, sharedAccessKeyName, sharedAccessKey, deviceID, nil
-}
-
-func tryGetKeyByName(v url.Values, key string) string {
-	if len(v[key]) == 0 {
-		return ""
-	}
-
-	return strings.Replace(v[key][0], " ", "+", -1)
-}
-
-func createSharedAccessToken(uri string, saName string, saKey string) string {
-
-	if len(uri) == 0 || len(saName) == 0 || len(saKey) == 0 {
-		return "Missing required parameter"
-	}
-
-	encoded := template.URLQueryEscaper(uri)
-	now := time.Now().Unix()
-	week := 60 * 60 * 24 * 7
-	ts := now + int64(week)
-	signature := encoded + "\n" + strconv.Itoa(int(ts))
-	key := []byte(saKey)
-	hmac := hmac.New(sha256.New, key)
-	hmac.Write([]byte(signature))
-	hmacString := template.URLQueryEscaper(base64.StdEncoding.EncodeToString(hmac.Sum(nil)))
-
-	result := "SharedAccessSignature sr=" + encoded + "&sig=" + hmacString + "&se=" + strconv.Itoa(int(ts)) + "&skn=" + saName
-	return result
+	context.SetOutput(ovResult, resp)
+	context.SetOutput(ovStatus, status)
+	return true, nil
 }

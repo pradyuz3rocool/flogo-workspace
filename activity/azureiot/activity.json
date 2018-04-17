@@ -15,12 +15,12 @@
   "outputs": [
     
     {
-      "name": "url",
-      "type":"string"
+      "name": "result",
+      "type":"any"
     },
     {
-      "name": "SAS Token",
-      "type":"string"
+      "name": "status",
+      "type":"any"
     }
   ]
 }
