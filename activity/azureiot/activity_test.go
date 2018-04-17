@@ -56,5 +56,6 @@ func TestEval(t *testing.T) {
 
 	//check result attr
 	result := tc.GetOutput("result")
+	status := tc.GetOutput("status")
 	assert.Equal(t, result, "Trying to connect to device using connection string on Azure IOTHub:HostName=HomeAutoHub.azure-devices.net;DeviceId=raspi;SharedAccessKey=IHx8ac6Bad4vHbv4I0HiJkhgeCNZhuzQdnllCAMSR+o=")
 }
