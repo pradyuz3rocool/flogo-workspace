@@ -48,11 +48,11 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 
 	log.Debug("The connection string to device is [%s]", connectionString)
 	hostName, sharedAccessKey, sharedAccessKeyName, deviceID, err := parseConnectionString(connectionString)
-	log.Info("sharedAccessKeyName", sharedAccessKeyName)
-	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=2016-11-14", hostName, deviceID)
+	log.Debug("sharedAccessKeyName", sharedAccessKeyName)
+	url := fmt.Sprintf("https://%s/devices/%s/messages/deviceBound?api-version=2016-11-14", hostName, deviceID)
 	SaS := createSharedAccessToken(url, sharedAccessKey)
 
-	context.SetOutput(ovURL, "https://"+url)
+	context.SetOutput(ovURL, url)
 	context.SetOutput(ovToken, SaS)
 	return true, nil
 }
