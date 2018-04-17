@@ -48,6 +48,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 
 	log.Debug("The connection string to device is [%s]", connectionString)
 	hostName, sharedAccessKey, sharedAccessKeyName, deviceID, err := parseConnectionString(connectionString)
+
 	url := fmt.Sprintf("https://%s/devices/%s/messages/deviceBound?api-version=2016-11-14", hostName, deviceID)
 	SaS := createSharedAccessToken(url, sharedAccessKeyName, sharedAccessKey)
 
@@ -84,16 +85,21 @@ func tryGetKeyByName(v url.Values, key string) string {
 
 func createSharedAccessToken(uri string, saName string, saKey string) string {
 
-	timestamp := time.Now().Unix() + int64(3600)
-	encodedURI := template.URLQueryEscaper(uri)
+	if len(uri) == 0 || len(saName) == 0 || len(saKey) == 0 {
+		return "Missing required parameter"
+	}
 
-	toSign := encodedURI + "\n" + strconv.FormatInt(timestamp, 10)
+	encoded := template.URLQueryEscaper(uri)
+	now := time.Now().Unix()
+	week := 60 * 60 * 24 * 7
+	ts := now + int64(week)
+	signature := encoded + "\n" + strconv.Itoa(int(ts))
+	key := []byte(saKey)
+	hmac := hmac.New(sha256.New, key)
+	hmac.Write([]byte(signature))
+	hmacString := template.URLQueryEscaper(base64.StdEncoding.EncodeToString(hmac.Sum(nil)))
 
-	binKey, _ := base64.StdEncoding.DecodeString(saKey)
-	mac := hmac.New(sha256.New, []byte(binKey))
-	mac.Write([]byte(toSign))
-
-	encodedSignature := template.URLQueryEscaper(base64.StdEncoding.EncodeToString(mac.Sum(nil)))
-
-	return fmt.Sprintf("SharedAccessSignature sig=%s&se=%d&skn=%s&sr=%s", encodedSignature, timestamp, saName, encodedURI)
+	result := "SharedAccessSignature sr=" + encoded + "&sig=" +
+		hmacString + "&se=" + strconv.Itoa(int(ts)) + "&skn=" + saName
+	return result
 }
