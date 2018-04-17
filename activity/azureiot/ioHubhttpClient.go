@@ -10,9 +10,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -37,31 +35,31 @@ type IotHubHTTPClient struct {
 	client              *http.Client
 }
 
-func parseConnectionString(connString string) (string, string, string, string, error) {
-	url, err := url.ParseQuery(connString)
-	if err != nil {
-		return "", "", "", "", err
-	}
+// func parseConnectionString(connString string) (string, string, string, string, error) {
+// 	url, err := url.ParseQuery(connString)
+// 	if err != nil {
+// 		return "", "", "", "", err
+// 	}
 
-	h := tryGetKeyByName(url, "HostName")
-	kn := tryGetKeyByName(url, "SharedAccessKeyName")
-	k := tryGetKeyByName(url, "SharedAccessKey")
-	d := tryGetKeyByName(url, "DeviceId")
+// 	h := tryGetKeyByName(url, "HostName")
+// 	kn := tryGetKeyByName(url, "SharedAccessKeyName")
+// 	k := tryGetKeyByName(url, "SharedAccessKey")
+// 	d := tryGetKeyByName(url, "DeviceId")
 
-	hostName := h
-	sharedAccessKeyName := kn
-	sharedAccessKey := k
-	deviceID := d
-	return hostName, sharedAccessKeyName, sharedAccessKey, deviceID, nil
-}
+// 	hostName := h
+// 	sharedAccessKeyName := kn
+// 	sharedAccessKey := k
+// 	deviceID := d
+// 	return hostName, sharedAccessKeyName, sharedAccessKey, deviceID, nil
+// }
 
-func tryGetKeyByName(v url.Values, key string) string {
-	if len(v[key]) == 0 {
-		return ""
-	}
+// func tryGetKeyByName(v url.Values, key string) string {
+// 	if len(v[key]) == 0 {
+// 		return ""
+// 	}
 
-	return strings.Replace(v[key][0], " ", "+", -1)
-}
+// 	return strings.Replace(v[key][0], " ", "+", -1)
+// }
 
 // NewIotHubHTTPClient is a constructor of IutHubClient
 func NewIotHubHTTPClient(hostName string, sharedAccessKeyName string, sharedAccessKey string, deviceID string) *IotHubHTTPClient {
@@ -160,6 +158,32 @@ func (c *IotHubHTTPClient) buildSasToken(uri string) string {
 
 }
 
+// func ComputeHmac256(message string, secret string) string {
+// 	data, _ := base64.StdEncoding.DecodeString(secret)
+// 	key := []byte(data)
+// 	h := hmac.New(sha256.New, key)
+// 	h.Write([]byte(message))
+// 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
+// }
+
+// func GenerateSasToken(resourceUri string, signingKey string, expiresInMins string, policyName string) string {
+// 	uri := template.URLQueryEscaper(resourceUri)
+
+// 	duration, _ := strconv.Atoi(expiresInMins)
+// 	expire := time.Now().Add(time.Duration(duration) * time.Minute)
+// 	secs := expire.Unix()
+// 	signed := uri + "\n" + strconv.FormatInt(secs, 10)
+
+// 	val := ComputeHmac256(signed, signingKey)
+// 	encodedVal := template.URLQueryEscaper(val)
+
+// 	token := "SharedAccessSignature sr=" + uri + "&sig=" + encoded_val + "&se=" + strconv.FormatInt(secs, 10)
+// 	if len(policyName) > 0 {
+// 		token += "&skn=" + policyName
+// 	}
+
+// 	return token
+// }
 func (c *IotHubHTTPClient) performRequest(method string, uri string, data string) (string, string) {
 	token := c.buildSasToken(uri)
 	log.Debug("%s https://%s\n", method, uri)

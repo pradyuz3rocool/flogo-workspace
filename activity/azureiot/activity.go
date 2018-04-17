@@ -1,7 +1,8 @@
 package azureiot
 
 import (
-	"fmt"
+	"net/url"
+	"strings"
 
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
@@ -39,20 +40,35 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	connectionString := context.GetInput(ivconnectionString).(string)
 
 	log.Debug("The connection string to device is [%s]", connectionString)
+	h, k, kn, d, err := parseConnectionString(connectionString)
 
-	client, err := NewIotHubHTTPClientFromConnectionString(connectionString)
-	if err != nil {
-		log.Error("Error creating http client from connection string", err)
-	}
-
-	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=2016-11-14", client.hostName, client.deviceID)
-	resp := client.buildSasToken(url)
-	status := "https://" + url
-	context.SetOutput(ovResult, resp)
-	context.SetOutput(ovStatus, status)
+	context.SetOutput(ovResult, "resp"+h+k+kn+d)
+	context.SetOutput(ovStatus, "status")
 	return true, nil
 }
 
-func parseConnString(connString string) {
+func parseConnectionString(connString string) (string, string, string, string, error) {
+	url, err := url.ParseQuery(connString)
+	if err != nil {
+		return "", "", "", "", err
+	}
 
+	h := tryGetKeyByName(url, "HostName")
+	kn := tryGetKeyByName(url, "SharedAccessKeyName")
+	k := tryGetKeyByName(url, "SharedAccessKey")
+	d := tryGetKeyByName(url, "DeviceId")
+
+	hostName := h
+	sharedAccessKeyName := kn
+	sharedAccessKey := k
+	deviceID := d
+	return hostName, sharedAccessKeyName, sharedAccessKey, deviceID, nil
+}
+
+func tryGetKeyByName(v url.Values, key string) string {
+	if len(v[key]) == 0 {
+		return ""
+	}
+
+	return strings.Replace(v[key][0], " ", "+", -1)
 }
