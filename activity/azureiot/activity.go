@@ -163,8 +163,8 @@ func (c *IotHubHTTPClient) PurgeCommandsForDeviceID(deviceID string) (string, st
 }
 
 // ListDeviceIDs list all device ids
-func (c *IotHubHTTPClient) ListDeviceIDs(top int) (string, string) {
-	url := fmt.Sprintf("%s/devices?top=%d&api-version=%s", c.hostName, top, apiVersion)
+func (c *IotHubHTTPClient) ListDeviceIDs() (string, string) {
+	url := fmt.Sprintf("%s/devices/query?api-version=%s", c.hostName, apiVersion)
 	return c.performRequest("GET", url, "")
 }
 
