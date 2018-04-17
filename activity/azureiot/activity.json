@@ -24,6 +24,10 @@
     {
       "name": "url",
       "type":"any"
+    },
+    {
+      "name": "SAS Token",
+      "type":"string"
     }
   ]
 }
