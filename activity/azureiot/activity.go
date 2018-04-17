@@ -101,7 +101,6 @@ func createSharedAccessToken(uri string, saName string, saKey string) string {
 	hmac.Write([]byte(signature))
 	hmacString := template.URLQueryEscaper(base64.StdEncoding.EncodeToString(hmac.Sum(nil)))
 
-	result := "SharedAccessSignature sr=" + encoded + "&sig=" +
-		hmacString + "&se=" + strconv.Itoa(int(ts)) + "&skn=" + saName
+	result := "SharedAccessSignature sr=" + encoded + "&sig=" + hmacString + "&se=" + strconv.Itoa(int(ts)) + "&skn=" + saName
 	return result
 }
