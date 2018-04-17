@@ -13,21 +13,14 @@
     }
   ],
   "outputs": [
-    {
-      "name": "result",
-      "type": "any"
-    },
-    {
-      "name": "status",
-      "type": "any"
-    },
+    
     {
       "name": "url",
-      "type":"any"
+      "type":"string"
     },
     {
       "name": "SAS Token",
-      "type":"any"
+      "type":"string"
     }
   ]
 }

@@ -20,10 +20,8 @@ var log = logger.GetLogger("activity-azureiot")
 const (
 	ivconnectionString = "connectionString"
 
-	ovResult = "result"
-	ovStatus = "status"
-	ovURL    = "url"
-	ovToken  = "token"
+	ovURL   = "url"
+	ovToken = "SAS Token"
 )
 
 // MyActivity is a stub for your Activity implementation
@@ -53,8 +51,6 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	url := fmt.Sprintf("https://%s/devices/%s/messages/deviceBound?api-version=2016-11-14", hostName, deviceID)
 	SaS := createSharedAccessToken(url, sharedAccessKeyName, sharedAccessKey)
 
-	context.SetOutput(ovResult, hostName+sharedAccessKey)
-	context.SetOutput(ovStatus, sharedAccessKeyName+deviceID)
 	context.SetOutput(ovURL, url)
 	context.SetOutput(ovToken, SaS)
 	return true, nil
