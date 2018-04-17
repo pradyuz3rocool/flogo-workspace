@@ -23,6 +23,7 @@ const (
 	ovResult = "result"
 	ovStatus = "status"
 	ovURL    = "url"
+	ovToken  = "token"
 )
 
 // MyActivity is a stub for your Activity implementation
@@ -49,10 +50,12 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 
 	log.Debug("The connection string to device is [%s]", connectionString)
 	hostName, sharedAccessKey, sharedAccessKeyName, deviceID, err := parseConnectionString(connectionString)
-	url := fmt.Sprintf("https://%s/devices/%s/messages/deviceBound?api-version=2016-11-14", hostName, deviceID)
+	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=2016-11-14", hostName, deviceID)
+	token := createSharedAccessToken(url, "", "")
 	context.SetOutput(ovResult, hostName+sharedAccessKey)
 	context.SetOutput(ovStatus, sharedAccessKeyName+deviceID)
 	context.SetOutput(ovURL, url)
+	context.SetOutput(ovToken, token)
 	return true, nil
 }
 
