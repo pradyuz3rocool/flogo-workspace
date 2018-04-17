@@ -4,7 +4,7 @@
   "type": "flogo:activity",
   "ref":"github.com/pradyuz3rocool/flogo-workspace/activity/azureiot",
   "description": "activity description",
-  "author": "Your Name <you.name@example.org>",
+  "author": "Pradyumna Chakciherla <pradyumna.chakichrla@isteer.com>",
   "inputs":[
     {
       "name": "connectionString",
