@@ -50,7 +50,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	hostName, sharedAccessKey, sharedAccessKeyName, deviceID, err := parseConnectionString(connectionString)
 	log.Info("sharedAccessKeyName", sharedAccessKeyName)
 	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=2016-11-14", hostName, deviceID)
-	SaS := createSharedAccessToken(url, sharedAccessKeyName, sharedAccessKey)
+	SaS := createSharedAccessToken(url, sharedAccessKey)
 
 	context.SetOutput(ovURL, "https://"+url)
 	context.SetOutput(ovToken, SaS)
@@ -83,9 +83,9 @@ func tryGetKeyByName(v url.Values, key string) string {
 	return strings.Replace(v[key][0], " ", "+", -1)
 }
 
-func createSharedAccessToken(uri string, saName string, saKey string) string {
+func createSharedAccessToken(uri string, saKey string) string {
 
-	if len(uri) == 0 || len(saName) == 0 || len(saKey) == 0 {
+	if len(uri) == 0 || len(saKey) == 0 {
 		return "Missing required parameter"
 	}
 
@@ -98,7 +98,6 @@ func createSharedAccessToken(uri string, saName string, saKey string) string {
 	hmac := hmac.New(sha256.New, key)
 	hmac.Write([]byte(signature))
 	hmacString := template.URLQueryEscaper(base64.StdEncoding.EncodeToString(hmac.Sum(nil)))
-
-	result := "SharedAccessSignature sr=" + encoded + "&sig=" + hmacString + "&se=" + strconv.Itoa(int(ts)) + "&skn=" + saName
+	result := "SharedAccessSignature sr=" + encoded + "&sig=" + hmacString + "&se=" + strconv.Itoa(int(ts))
 	return result
 }
