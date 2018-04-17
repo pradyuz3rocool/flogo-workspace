@@ -42,4 +42,4 @@ Inputs and Outputs:
 | Output       | Description                                            |
 |:-------------|:-------------------------------------------------------|
 | result       | A response from the request, It would be something like `'{"deviceId":"testing","generationId":"636595531817773533","etag":"NzkxOTM4Njcx","connectionState":"Disconnected","status":"enabled","statusReason":null,"connectionStateUpdatedTime":"0001-01-01T00:00:00","statusUpdatedTime":"0001-01-01T00:00:00","lastActivityTime":"0001-01-01T00:00:00","cloudToDeviceMessageCount":0,"authentication":{"symmetricKey":{"primaryKey":"gYcx0xir8NSvqPBjB3ypDkRqPQVwAZ6MzbRcHHvJzEk=","secondaryKey":"WoEQ3aUy+bx7wvMnDUc4R0SA1X1M3msmXyOQDBRvH8k="},"x509Thumbprint":{"primaryThumbprint":null,"secondaryThumbprint":null}}}'` |
-| status       | THe status of the request made                            |
+| status       | The status of the request made                            |
