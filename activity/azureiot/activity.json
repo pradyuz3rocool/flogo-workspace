@@ -27,7 +27,7 @@
     },
     {
       "name": "SAS Token",
-      "type":"string"
+      "type":"any"
     }
   ]
 }
