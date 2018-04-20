@@ -23,6 +23,8 @@ var log = logger.GetLogger("activity-azureiot")
 
 const (
 	ivconnectionString = "connectionString"
+	ivTypeofOp         = "Type of Operation"
+	ivDeviceID         = "Device ID"
 
 	ovResult = "result"
 	ovStatus = "status"
@@ -68,17 +70,37 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	// do eval
 
 	connectionString := context.GetInput(ivconnectionString).(string)
+	methodType := context.GetInput(ivTypeofOp).(string)
+	deviceID := context.GetInput(ivDeviceID).(string)
 
 	log.Debug("The connection string to device is [%s]", connectionString)
+	log.Debug("The Method type selected is [%s]", methodType)
+	log.Debug("The Devic ID is [%s]", deviceID)
 
 	client, err := NewIotHubHTTPClientFromConnectionString(connectionString)
 	if err != nil {
 		log.Error("Error creating http client from connection string", err)
 	}
-	resp, status := client.CreateDeviceID("testing")
 
-	context.SetOutput(ovResult, resp)
-	context.SetOutput(ovStatus, status)
+	switch methodType {
+	case "Add Device":
+		resp, status := client.CreateDeviceID(deviceID)
+		context.SetOutput(ovResult, resp)
+		context.SetOutput(ovStatus, status)
+	case "Delete Device":
+		resp, status := client.DeleteDeviceID(deviceID)
+		context.SetOutput(ovResult, resp)
+		context.SetOutput(ovStatus, status)
+	case "Purge Device":
+		resp, status := client.PurgeCommandsForDeviceID(deviceID)
+		context.SetOutput(ovResult, resp)
+		context.SetOutput(ovStatus, status)
+	case "List Devices":
+		resp, status := client.ListDeviceIDs()
+		context.SetOutput(ovResult, resp)
+		context.SetOutput(ovStatus, status)
+	}
+
 	return true, nil
 }
 func parseConnectionString(connString string) (hostName, sharedAccessKey, sharedAccessKeyName, deviceID, error) {
@@ -168,21 +190,21 @@ func (c *IotHubHTTPClient) ListDeviceIDs() (string, string) {
 	return c.performRequest("GET", url, "")
 }
 
-// TODO: SendMessageToDevice as soon as that endpoint is exposed via HTTP
+// // TODO: SendMessageToDevice as soon as that endpoint is exposed via HTTP
 
-// Device API
+// // Device API
 
-// SendMessage from a logged in device
-func (c *IotHubHTTPClient) SendMessage(message string) (string, string) {
-	url := fmt.Sprintf("%s/devices/%s/messages/events?api-version=%s", c.hostName, c.deviceID, apiVersion)
-	return c.performRequest("POST", url, message)
-}
+// // SendMessage from a logged in device
+// func (c *IotHubHTTPClient) SendMessage(message string) (string, string) {
+// 	url := fmt.Sprintf("%s/devices/%s/messages/events?api-version=%s", c.hostName, c.deviceID, apiVersion)
+// 	return c.performRequest("POST", url, message)
+// }
 
-// ReceiveMessage to a logged in device
-func (c *IotHubHTTPClient) ReceiveMessage() (string, string) {
-	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=%s", c.hostName, c.deviceID, apiVersion)
-	return c.performRequest("GET", url, "")
-}
+// // ReceiveMessage to a logged in device
+// func (c *IotHubHTTPClient) ReceiveMessage() (string, string) {
+// 	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=%s", c.hostName, c.deviceID, apiVersion)
+// 	return c.performRequest("GET", url, "")
+// }
 
 func (c *IotHubHTTPClient) buildSasToken(uri string) string {
 	timestamp := time.Now().Unix() + int64(3600)

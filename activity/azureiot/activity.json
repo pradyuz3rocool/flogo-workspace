@@ -10,6 +10,16 @@
       "name": "connectionString",
       "type": "string",
       "required": true
+    },
+    {
+      "name": "Type of Operation",
+      "type": "string",
+      "required": true,
+      "allowed": ["Add Device", "Delete Device", "List Devices", "Purge Device"]
+    },
+    {
+      "name": "Device ID",
+      "type": "string"
     }
   ],
   "outputs": [
