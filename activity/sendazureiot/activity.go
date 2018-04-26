@@ -85,11 +85,11 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	}
 
 	switch action {
-	case "Add Device":
+	case "Recieve":
 		resp, status := client.ReceiveMessage()
 		context.SetOutput(ovResult, resp)
 		context.SetOutput(ovStatus, status)
-	case "Delete Device":
+	case "Send":
 		resp, status := client.SendMessage(message)
 		context.SetOutput(ovResult, resp)
 		context.SetOutput(ovStatus, status)
