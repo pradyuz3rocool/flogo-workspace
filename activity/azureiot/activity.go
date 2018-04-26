@@ -95,10 +95,6 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 		resp, status := client.PurgeCommandsForDeviceID(deviceID)
 		context.SetOutput(ovResult, resp)
 		context.SetOutput(ovStatus, status)
-	case "List Devices":
-		resp, status := client.ListDeviceIDs()
-		context.SetOutput(ovResult, resp)
-		context.SetOutput(ovStatus, status)
 	}
 
 	return true, nil
