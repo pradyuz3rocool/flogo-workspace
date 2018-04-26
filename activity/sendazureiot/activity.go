@@ -25,6 +25,7 @@ const (
 	ivconnectionString = "connectionString"
 	ivMessage          = "message"
 	ivDeviceID         = "Device ID"
+	ivaction           = "Action"
 
 	ovResult = "result"
 	ovStatus = "status"
@@ -71,6 +72,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 
 	connectionString := context.GetInput(ivconnectionString).(string)
 	message := context.GetInput(ivMessage).(string)
+	action := context.GetInput(ivaction).(string)
 	deviceID := context.GetInput(ivDeviceID).(string)
 
 	log.Debug("The connection string to device is [%s]", connectionString)
@@ -81,9 +83,18 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	if err != nil {
 		log.Error("Error creating http client from connection string", err)
 	}
-	resp, status := client.SendMessage(message)
-	context.SetOutput(ovResult, resp)
-	context.SetOutput(ovStatus, status)
+
+	switch action {
+	case "Add Device":
+		resp, status := client.ReceiveMessage()
+		context.SetOutput(ovResult, resp)
+		context.SetOutput(ovStatus, status)
+	case "Delete Device":
+		resp, status := client.SendMessage(message)
+		context.SetOutput(ovResult, resp)
+		context.SetOutput(ovStatus, status)
+	}
+
 	return true, nil
 }
 

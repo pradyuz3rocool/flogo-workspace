@@ -23,8 +23,7 @@
     },
     {
       "name": "message",
-      "type": "any",
-      "required": true
+      "type": "string"
     }
   ],
   "outputs": [
