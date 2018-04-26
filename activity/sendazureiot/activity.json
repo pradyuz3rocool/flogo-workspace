@@ -13,8 +13,13 @@
     },
     {
       "name": "Device ID",
+      "type": "string"
+    },
+    {
+      "name": "Action",
       "type": "string",
-      "required": true
+      "required": true,
+      "allowed": ["Send", "Recieve"]
     },
     {
       "name": "message",
