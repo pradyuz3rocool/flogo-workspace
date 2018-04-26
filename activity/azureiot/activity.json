@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "type": "flogo:activity",
   "ref":"github.com/pradyuz3rocool/flogo-workspace/activity/azureiot",
-  "description": "activity description",
-  "author": "Pradyumna Chakciherla <pradyumna.chakichrla@isteer.com>",
+  "description": "Performs CRUD operations of device management in Azure IOT Hub",
+  "author": "Pradyumna Chakicherla <pradyumna.chakicherla@isteer.com>",
   "inputs":[
     {
       "name": "connectionString",

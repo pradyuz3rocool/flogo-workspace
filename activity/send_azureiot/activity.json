@@ -2,18 +2,34 @@
   "name": "send_azureiot",
   "version": "0.0.1",
   "type": "flogo:activity",
+  "ref":"github.com/pradyuz3rocool/flogo-workspace/activity/send_azureiot",
   "description": "activity description",
-  "author": "Your Name <you.name@example.org>",
+  "author": "Pradyumna Chakicherla <pradyumna.chakicherla@isteer.com>",
   "inputs":[
     {
-      "name": "input",
-      "type": "string"
+      "name": "connectionString",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "Device ID",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "message",
+      "type": "any",
+      "required": true
     }
   ],
   "outputs": [
     {
-      "name": "output",
-      "type": "string"
+      "name": "result",
+      "type":"any"
+    },
+    {
+      "name": "status",
+      "type":"any"
     }
   ]
 }
