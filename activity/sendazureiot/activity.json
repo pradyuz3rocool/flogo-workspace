@@ -2,7 +2,7 @@
   "name": "sendazureiot",
   "version": "0.0.1",
   "type": "flogo:activity",
-  "ref":"github.com/pradyuz3rocool/flogo-workspace/activity/send_azureiot",
+  "ref":"github.com/pradyuz3rocool/flogo-workspace/activity/sendazureiot",
   "description": "activity description",
   "author": "Pradyumna Chakicherla <pradyumna.chakicherla@isteer.com>",
   "inputs":[
