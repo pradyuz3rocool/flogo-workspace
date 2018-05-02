@@ -188,7 +188,7 @@ func (c *IotHubHTTPClient) buildSasToken(uri string) string {
 func (c *IotHubHTTPClient) performRequest(method string, uri string, data string) (string, string) {
 	token := c.buildSasToken(uri)
 	//log.("%s https://%s\n", method, uri)
-	log.Printf(token)
+	log.Info(token)
 	req, _ := http.NewRequest(method, "https://"+uri, bytes.NewBufferString(data))
 
 	req.Header.Set("Content-Type", "application/json")
