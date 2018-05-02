@@ -72,7 +72,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 
 	connectionString := context.GetInput(ivconnectionString).(string)
 	message := context.GetInput(ivMessage).(string)
-	action := context.GetInput(ivaction).(string)
+	//action := context.GetInput(ivaction).(string)
 	deviceID := context.GetInput(ivDeviceID).(string)
 
 	log.Debug("The connection string to device is [%s]", connectionString)
@@ -83,17 +83,19 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	if err != nil {
 		log.Error("Error creating http client from connection string", err)
 	}
-
-	switch action {
-	case "Recieve":
-		resp, status := client.ReceiveMessage()
-		context.SetOutput(ovResult, resp)
-		context.SetOutput(ovStatus, status)
-	case "Send":
-		resp, status := client.SendMessage(message)
-		context.SetOutput(ovResult, resp)
-		context.SetOutput(ovStatus, status)
-	}
+	resp, status := client.ReceiveMessage()
+	context.SetOutput(ovResult, resp)
+	context.SetOutput(ovStatus, status)
+	// switch action {
+	// case "Recieve":
+	// 	resp, status := client.ReceiveMessage()
+	// 	context.SetOutput(ovResult, resp)
+	// 	context.SetOutput(ovStatus, status)
+	// case "Send":
+	// 	resp, status := client.SendMessage(message)
+	// 	context.SetOutput(ovResult, resp)
+	// 	context.SetOutput(ovStatus, status)
+	// }
 
 	return true, nil
 }
@@ -163,6 +165,7 @@ func (c *IotHubHTTPClient) SendMessage(message string) (string, string) {
 // ReceiveMessage to a logged in device
 func (c *IotHubHTTPClient) ReceiveMessage() (string, string) {
 	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=%s", c.hostName, c.deviceID, apiVersion)
+	log.Debugf(url)
 	return c.performRequest("GET", url, "")
 }
 
@@ -188,7 +191,7 @@ func (c *IotHubHTTPClient) buildSasToken(uri string) string {
 func (c *IotHubHTTPClient) performRequest(method string, uri string, data string) (string, string) {
 	token := c.buildSasToken(uri)
 	//log.("%s https://%s\n", method, uri)
-	log.Info(token)
+	log.Debug(token)
 	req, _ := http.NewRequest(method, "https://"+uri, bytes.NewBufferString(data))
 
 	req.Header.Set("Content-Type", "application/json")
