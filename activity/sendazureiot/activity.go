@@ -83,19 +83,9 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	if err != nil {
 		log.Error("Error creating http client from connection string", err)
 	}
-	resp, status := client.ReceiveMessage()
+	resp, status := client.SendMessage(message)
 	context.SetOutput(ovResult, resp)
 	context.SetOutput(ovStatus, status)
-	// switch action {
-	// case "Recieve":
-	// 	resp, status := client.ReceiveMessage()
-	// 	context.SetOutput(ovResult, resp)
-	// 	context.SetOutput(ovStatus, status)
-	// case "Send":
-	// 	resp, status := client.SendMessage(message)
-	// 	context.SetOutput(ovResult, resp)
-	// 	context.SetOutput(ovStatus, status)
-	// }
 
 	return true, nil
 }

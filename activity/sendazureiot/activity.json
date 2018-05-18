@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "type": "flogo:activity",
   "ref":"github.com/pradyuz3rocool/flogo-workspace/activity/sendazureiot",
-  "description": "activity description",
+  "description": "Creates an activity to send a message to Azure IOT Hub",
   "author": "Pradyumna Chakicherla <pradyumna.chakicherla@isteer.com>",
   "inputs":[
     {
@@ -19,7 +19,7 @@
       "name": "Action",
       "type": "string",
       "required": true,
-      "allowed": ["Send", "Recieve"]
+      "allowed": ["Send"]
     },
     {
       "name": "message",
