@@ -152,13 +152,6 @@ func (c *IotHubHTTPClient) SendMessage(message string) (string, string) {
 	return c.performRequest("POST", url, message)
 }
 
-// ReceiveMessage to a logged in device
-func (c *IotHubHTTPClient) ReceiveMessage() (string, string) {
-	url := fmt.Sprintf("%s/devices/%s/messages/deviceBound?api-version=%s", c.hostName, c.deviceID, apiVersion)
-	log.Debugf(url)
-	return c.performRequest("GET", url, "")
-}
-
 func (c *IotHubHTTPClient) buildSasToken(uri string) string {
 	timestamp := time.Now().Unix() + int64(3600)
 	encodedURI := template.URLQueryEscaper(uri)

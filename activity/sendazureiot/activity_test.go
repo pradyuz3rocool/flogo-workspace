@@ -6,6 +6,7 @@ import (
 
 	"github.com/TIBCOSoftware/flogo-contrib/action/flow/test"
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
+	"github.com/stretchr/testify/assert"
 )
 
 var activityMetadata *activity.Metadata
@@ -49,7 +50,16 @@ func TestEval(t *testing.T) {
 
 	//setup attrs
 
+	tc.SetInput("connectionString", "HostName=HomeAutoHub.azure-devices.net;DeviceId=raspi;SharedAccessKey=IHx8ac6Bad4vHbv4I0HiJkhgeCNZhuzQdnllCAMSR+o=")
+	tc.SetInput("message", "Testing")
+	tc.SetInpu("deviceID", "raspi")
+
 	act.Eval(tc)
 
 	//check result attr
+	result := tc.GetOutput("result")
+	status := tc.GetOutput("status")
+	assert.Equal(t, result, "Successful Response")
+	assert.Equal(t, result, "200 Ok")
+
 }
