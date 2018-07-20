@@ -1,0 +1,205 @@
+{
+  "name": "microservice",
+  "type": "flogo:app",
+  "version": "0.0.1",
+  "description": "Example of a Flogo microservice exposing a REST API",
+  "triggers": [
+    {
+      "name": "Receive HTTP Message",
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/trigger/rest",
+      "description": "Simple REST Trigger",
+      "settings": {
+        "port": "8091"
+      },
+      "id": "receive_http_message",
+      "handlers": [
+        {
+          "settings": {
+            "method": "GET",
+            "path": "/customer",
+            "autoIdReply": "false",
+            "useReplyHandler": "true"
+          },
+          "actionId": "customer_service"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "name": "Customer Service",
+      "data": {
+        "flow": {
+          "type": 1,
+          "attributes": [],
+		  "explicitReply": true,
+          "rootTask": {
+            "id": 1,
+            "type": 1,
+            "tasks": [
+              {
+                "id": 2,
+                "name": "Log start",
+                "description": "Simple Log Activity",
+                "type": 1,
+                "activityType": "github-com-tibco-software-flogo-contrib-activity-log",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+                "attributes": [
+                  {
+                    "name": "message",
+                    "value": "Get customer request",
+                    "required": false,
+                    "type": "string"
+                  },
+                  {
+                    "name": "flowInfo",
+                    "value": "false",
+                    "required": false,
+                    "type": "boolean"
+                  },
+                  {
+                    "name": "addToFlow",
+                    "value": "true",
+                    "required": false,
+                    "type": "boolean"
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "name": "Found",
+                "description": "Simple Log Activity",
+                "type": 1,
+                "activityType": "github-com-tibco-software-flogo-contrib-activity-log",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+                "attributes": [
+                  {
+                    "name": "message",
+                    "value": "Customer found",
+                    "required": false,
+                    "type": "string"
+                  },
+                  {
+                    "name": "flowInfo",
+                    "value": "false",
+                    "required": false,
+                    "type": "boolean"
+                  },
+                  {
+                    "name": "addToFlow",
+                    "value": "true",
+                    "required": false,
+                    "type": "boolean"
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "name": "Reply OK",
+                "description": "Simple Reply Activity",
+                "type": 1,
+                "activityType": "github-com-tibco-software-flogo-contrib-activity-reply",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
+                "attributes": [
+                  {
+                    "name": "code",
+                    "value": "200",
+                    "required": true,
+                    "type": "integer"
+                  },
+                  {
+                    "name": "data",
+                    "value": "{\"name\":\"bob\", \"age\" : 29}",
+                    "required": false,
+                    "type": "object"
+                  }
+                ]
+              },
+              {
+                "id": 5,
+                "name": "Not found",
+                "description": "Simple Log Activity",
+                "type": 1,
+                "activityType": "github-com-tibco-software-flogo-contrib-activity-log",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+                "attributes": [
+                  {
+                    "name": "message",
+                    "value": "Customer not found",
+                    "required": false,
+                    "type": "string"
+                  },
+                  {
+                    "name": "flowInfo",
+                    "value": "false",
+                    "required": false,
+                    "type": "boolean"
+                  },
+                  {
+                    "name": "addToFlow",
+                    "value": "true",
+                    "required": false,
+                    "type": "boolean"
+                  }
+                ]
+              },
+              {
+                "id": 6,
+                "name": "Reply KO",
+                "description": "Simple Reply Activity",
+                "type": 1,
+                "activityType": "github-com-tibco-software-flogo-contrib-activity-reply",
+                "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
+                "attributes": [
+                  {
+                    "name": "code",
+                    "value": "404",
+                    "required": true,
+                    "type": "integer"
+                  },
+                  {
+                    "name": "data",
+                    "value": null,
+                    "required": false,
+                    "type": "any"
+                  }
+                ]
+              }
+            ],
+            "links": [
+              {
+                "id": 1,
+                "from": 2,
+                "to": 3,
+                "type": 1,
+                "value": "${T.queryParams}.name == \"bob\""
+              },
+              {
+                "id": 2,
+                "from": 3,
+                "to": 4,
+                "type": 0
+              },
+              {
+                "id": 3,
+                "from": 2,
+                "to": 5,
+                "type": 1,
+                "value": "${T.queryParams}.name != \"bob\""
+              },
+              {
+                "id": 4,
+                "from": 5,
+                "to": 6,
+                "type": 0
+              }
+            ],
+            "attributes": []
+          }
+        }
+      },
+      "id": "customer_service",
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow"
+    }
+  ]
+}

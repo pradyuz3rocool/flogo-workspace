@@ -36,10 +36,10 @@ Inputs and Outputs:
 ## Inputs
 | Input                          | Description    |
 |:-------------------------------|:---------------|
-| Connection String               | Your Azure IOT ConectionString.It would be something similar to `'HostName=HomeAutoHub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=0JE8ig33UrJNzLbZHn8B2rpT66LYmNzZ9JWEYhlEJJo='`.            |
+| Connection String               | Your Azure IOT ConectionString.            |
 
 ## Ouputs
 | Output       | Description                                            |
 |:-------------|:-------------------------------------------------------|
-| result       | A response from the request, It would be something like `'{"deviceId":"testing","generationId":"636595531817773533","etag":"NzkxOTM4Njcx","connectionState":"Disconnected","status":"enabled","statusReason":null,"connectionStateUpdatedTime":"0001-01-01T00:00:00","statusUpdatedTime":"0001-01-01T00:00:00","lastActivityTime":"0001-01-01T00:00:00","cloudToDeviceMessageCount":0,"authentication":{"symmetricKey":{"primaryKey":"gYcx0xir8NSvqPBjB3ypDkRqPQVwAZ6MzbRcHHvJzEk=","secondaryKey":"WoEQ3aUy+bx7wvMnDUc4R0SA1X1M3msmXyOQDBRvH8k="},"x509Thumbprint":{"primaryThumbprint":null,"secondaryThumbprint":null}}}'` |
+| result       | A response from the request, It would be something like `'{"deviceId":"testing","generationId":"636595531817773533","etag":"NzkxOTM4Njcx","connectionState":"Disconnected","status":"enabled","statusReason":null,"connectionStateUpdatedTime":"0001-01-01T00:00:00","statusUpdatedTime":"0001-01-01T00:00:00","lastActivityTime":"0001-01-01T00:00:00","cloudToDeviceMessageCount":0,"authentication":{"symmetricKey":{"primaryKey":"**********","secondaryKey":"**************"},"x509Thumbprint":{"primaryThumbprint":null,"secondaryThumbprint":null}}}'` |
 | status       | The status of the request made                            |
