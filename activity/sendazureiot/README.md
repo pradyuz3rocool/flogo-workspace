@@ -40,7 +40,7 @@ Inputs and Outputs:
 ## Inputs
 | Input                          | Description    |
 |:-------------------------------|:---------------|
-| Connection String               | Your Azure IOT Connection String.            |
+| Connection String              | Your Azure IOT Connection String.            |
 | Device ID                      | Name of the Device  |
 | Action                         | Send                |
 | Mesage                         | Message to be sent  |
