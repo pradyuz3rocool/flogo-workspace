@@ -33,7 +33,7 @@ Inputs and Outputs:
     },
     {
       "name": "message",
-      "type": "string"
+      "type": "object"
     }
   ]
 ```

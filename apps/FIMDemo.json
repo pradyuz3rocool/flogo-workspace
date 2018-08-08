@@ -1,0 +1,132 @@
+{
+  "name": "Tempsense",
+  "type": "flogo:actions",
+  "version": "0.0.1",
+  "appModel": "1.0.0",
+  "resources": [
+    {
+      "id": "flow:tempsense",
+      "data": {
+        "name": "Tempsense",
+        "metadata": {
+          "input": [
+            {
+              "name": "Temp",
+              "type": "string"
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "id": "log_2",
+            "name": "Start",
+            "description": "Simple Log Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+              "input": {
+                "message": "",
+                "flowInfo": "false",
+                "addToFlow": "true"
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "assign",
+                    "value": "$flow.Temp",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "sendazureiot_3",
+            "name": "sendazureiot",
+            "description": "Creates an activity to send a message to Azure IOT Hub",
+            "activity": {
+              "ref": "github.com/pradyuz3rocool/flogo-workspace/activity/sendazureiot",
+              "input": {
+                "connectionString": "HostName=HomeAutoHub.azure-devices.net;DeviceId=raspi;SharedAccessKey=/Me+Jt/cNQ1ID4tDqW3/zg==",
+                "Device ID": "raspi",
+                "Action": "Send",
+                "message": null
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "expression",
+                    "value": "string.concat(\"{\",\"temp\",\":\",$activity[log_2].message,\"}\")",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "actreturn_5",
+            "name": "Return",
+            "description": "Simple Return Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/actreturn",
+              "input": {}
+            }
+          },
+          {
+            "id": "sendazureiot_4",
+            "name": "sendazureiot (2)",
+            "description": "Creates an activity to send a message to Azure IOT Hub",
+            "activity": {
+              "ref": "github.com/pradyuz3rocool/flogo-workspace/activity/sendazureiot",
+              "input": {
+                "connectionString": "HostName=HomeAutoHub.azure-devices.net;DeviceId=raspi;SharedAccessKey=/Me+Jt/cNQ1ID4tDqW3/zg==",
+                "Device ID": "raspi",
+                "Action": "Send",
+                "message": null
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "expression",
+                    "value": "string.concat(\"{\",\"temp\",\":\",$activity[log_2].message,\"}\")",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "actreturn_6",
+            "name": "Return (2)",
+            "description": "Simple Return Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/actreturn",
+              "input": {}
+            }
+          }
+        ],
+        "links": [
+          {
+            "from": "log_2",
+            "to": "sendazureiot_3",
+            "type": "expression",
+            "value": "$activity[log_2].message < 10"
+          },
+          {
+            "from": "sendazureiot_3",
+            "to": "actreturn_5"
+          },
+          {
+            "from": "log_2",
+            "to": "sendazureiot_4",
+            "type": "expression",
+            "value": "$activity[log_2].message > 90"
+          },
+          {
+            "from": "sendazureiot_4",
+            "to": "actreturn_6"
+          }
+        ]
+      }
+    }
+  ]
+}
