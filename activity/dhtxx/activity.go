@@ -41,7 +41,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	temperature, humidity, retried, err :=
 		dht.ReadDHTxxWithRetry(dht.DHT11, pinNumber, true, 10)
 	if err != nil {
-		log.Fatal(err)
+		log.Debug(err)
 	}
 	// Print temperature and humidity
 	fmt.Printf("Temperature = %v*C, Humidity = %v%% (retried %d times)\n",
