@@ -5,7 +5,7 @@ import (
 
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
-	"github.com/d2r2/go-dht"
+	dht "github.com/d2r2/go-dht"
 )
 
 var log = logger.GetLogger("activity-dhtxx")
