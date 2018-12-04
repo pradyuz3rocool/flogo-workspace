@@ -8,6 +8,11 @@
   "inputs":[
     {
       "name": "Pin Number",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "Sensor Type",
       "type": "string"
     }
   ],

@@ -39,7 +39,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	pinNumber := context.GetInput(ivPin)
 	// do eval
 	temperature, humidity, retried, err :=
-		dht.ReadDHTxxWithRetry(dht.DHT11, 4, true, 10)
+		dht.ReadDHTxxWithRetry(dht.DHT11, pinNumber, true, 10)
 	if err != nil {
 		log.Fatal(err)
 	}
