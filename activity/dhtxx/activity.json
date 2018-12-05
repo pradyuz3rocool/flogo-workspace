@@ -8,18 +8,22 @@
   "inputs":[
     {
       "name": "Pin Number",
-      "type": "string",
+      "type": "any",
       "required": true
     },
     {
       "name": "Sensor Type",
-      "type": "string"
+      "type": "any"
     }
   ],
   "outputs": [
     {
-      "name": "output",
-      "type": "string"
+      "name": "temperature",
+      "type":"any"
+    },
+    {
+      "name": "Humidity",
+      "type":"any"
     }
   ]
 }

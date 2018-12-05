@@ -1,8 +1,6 @@
 package dhtxx
 
 import (
-	"fmt"
-
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"github.com/d2r2/go-dht"
@@ -13,6 +11,9 @@ var log = logger.GetLogger("activity-dhtxx")
 const (
 	ivSensorType = "SensorType"
 	ivPin        = "PinNumber"
+
+	ovTemperature = "result"
+	ovHumidity    = "status"
 )
 
 // MyActivity is a stub for your Activity implementation
@@ -44,8 +45,6 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 		log.Debug(err)
 	}
 	// Print temperature and humidity
-	fmt.Printf("Temperature = %v*C, Humidity = %v%% (retried %d times)\n",
-		temperature, humidity, retried)
 
 	return true, nil
 }
