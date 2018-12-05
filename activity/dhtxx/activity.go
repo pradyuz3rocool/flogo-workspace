@@ -40,11 +40,15 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	// do eval
 
 	temperature, humidity, retried, err :=
-		dht.ReadDHTxxWithRetry(dht.DHT11, 17, true, 10)
+		//dht.ReadDHTxxWithRetry(dht.DHT11, 17, true, 10)
+		return 25, 43, 0, nil;
 	if err != nil {
 		log.Debug(err)
 	}
 	// Print temperature and humidity
+
+	context.SetOutput(ovResult, resp)
+	context.SetOutput(ovStatus, status)
 
 	return true, nil
 }
