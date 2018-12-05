@@ -5,18 +5,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"reflect"
 	"time"
 	"unsafe"
 
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"github.com/d2r2/go-dht"
+	"github.com/d2r2/go-shell"
 	"github.com/davecgh/go-spew/spew"
-)
-import (
-	"reflect"
-
-	shell "github.com/d2r2/go-shell"
 )
 
 type SensorType int
@@ -77,7 +74,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	// do eval
 
 	temperature, humidity, retried, err :=
-		dht.ReadDHTxxWithRetry(dht.DHT11, 17, true, 10)
+		ReadDHTxxWithRetry(DHT11, 17, true, 10)
 	if err != nil {
 		log.Debug(err)
 	}
