@@ -1,6 +1,5 @@
 package dhtxx
 
-
 import (
 	"fmt"
 
@@ -10,7 +9,7 @@ import (
 )
 
 var log = logger.GetLogger("activity-dhtxx")
-var dht = 
+
 const (
 	ivSensorType = "SensorType"
 	ivPin        = "PinNumber"
@@ -39,8 +38,9 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 	sensorType := context.GetInput(SensorType).(string)
 	pinNumber := context.GetInput(ivPin).(int)
 	// do eval
+
 	temperature, humidity, retried, err :=
-		dhtxx.ReadDHTxxWithRetry(dhtxx.DHT11, 17, true, 10)
+		dht.ReadDHTxxWithRetry(dht.DHT11, 17, true, 10)
 	if err != nil {
 		log.Debug(err)
 	}
