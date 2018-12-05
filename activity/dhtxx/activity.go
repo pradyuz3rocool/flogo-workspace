@@ -35,7 +35,6 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 
 	//sensorType := context.GetInput(ivsensorType).(string)
 
-	sensorType := context.GetInput(SensorType).(string)
 	pinNumber := context.GetInput(ivPin).(int)
 	// do eval
 
