@@ -1,0 +1,82 @@
+{
+  "name": "MQTTtestApp",
+  "type": "flogo:app",
+  "version": "0.0.1",
+  "appModel": "1.0.0",
+  "triggers": [
+    {
+      "id": "receive_mqtt_message",
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/trigger/mqtt",
+      "name": "Receive MQTT Message",
+      "description": "Simple MQTT Trigger",
+      "settings": {
+        "broker": "tcp://192.168.1.74:1883",
+        "id": "flogo",
+        "user": "username",
+        "password": "password",
+        "store": "ds"
+      },
+      "handlers": [
+        {
+          "action": {
+            "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow",
+            "data": {
+              "flowURI": "res://flow:mqtt_test_flow"
+            },
+            "mappings": {
+              "input": [
+                {
+                  "mapTo": "temp",
+                  "type": "assign",
+                  "value": "$.message"
+                }
+              ]
+            }
+          },
+          "settings": {
+            "topic": "topic"
+          }
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "flow:mqtt_test_flow",
+      "data": {
+        "name": "MqttTestFlow",
+        "metadata": {
+          "input": [
+            {
+              "name": "temp",
+              "type": "string"
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "id": "log_2",
+            "name": "Log Message",
+            "description": "Simple Log Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+              "input": {
+                "flowInfo": true,
+                "addToFlow": true
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "assign",
+                    "value": "$flow.temp",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
