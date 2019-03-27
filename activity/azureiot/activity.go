@@ -192,7 +192,7 @@ func (c *IotHubHTTPClient) ListDeviceIDs() (string, string) {
 }
 
 // Get Device Twin
-func (c *IotHubHTTPClient) GetDeviceTwin() (deviceID string) (string, string) {
+func (c *IotHubHTTPClient) GetDeviceTwin(deviceID string) (string, string) {
 	url := fmt.Sprintf("%s/twins/%s?api-version=2018-06-30", c.hostName, deviceID)
 	return c.performRequest("GET", url, "")
 }
