@@ -95,6 +95,10 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error) {
 		resp, status := client.PurgeCommandsForDeviceID(deviceID)
 		context.SetOutput(ovResult, resp)
 		context.SetOutput(ovStatus, status)
+	case "Get Twin Details":
+		resp, status := client.GetDeviceTwin(deviceID)
+		context.SetOutput(ovResult, resp)
+		context.SetOutput(ovStatus, status)
 	}
 
 	return true, nil
@@ -168,6 +172,7 @@ func (c *IotHubHTTPClient) GetDeviceID(deviceID string) (string, string) {
 	return c.performRequest("GET", url, "")
 }
 
+
 // DeleteDeviceID deletes device by id
 func (c *IotHubHTTPClient) DeleteDeviceID(deviceID string) (string, string) {
 	url := fmt.Sprintf("%s/devices/%s?api-version=%s", c.hostName, deviceID, apiVersion)
@@ -183,6 +188,12 @@ func (c *IotHubHTTPClient) PurgeCommandsForDeviceID(deviceID string) (string, st
 // ListDeviceIDs list all device ids
 func (c *IotHubHTTPClient) ListDeviceIDs() (string, string) {
 	url := fmt.Sprintf("%s/devices/query?api-version=%s", c.hostName, apiVersion)
+	return c.performRequest("GET", url, "")
+}
+
+// Get Device Twin
+func (c *IotHubHTTPClient) GetDeviceTwin() (deviceID string) {
+	url := fmt.Sprintf("%s/twins/%s?api-version=2018-06-30", c.hostName, deviceID)
 	return c.performRequest("GET", url, "")
 }
 

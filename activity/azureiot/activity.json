@@ -15,7 +15,7 @@
       "name": "Type of Operation",
       "type": "string",
       "required": true,
-      "allowed": ["Add Device", "Delete Device", "Purge Device"]
+      "allowed": ["Add Device", "Delete Device", "Purge Device", "Get Twin Details"]
     },
     {
       "name": "Device ID",
