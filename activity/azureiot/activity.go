@@ -233,7 +233,7 @@ func (c *IotHubHTTPClient) buildSasToken(uri string) string {
 
 func (c *IotHubHTTPClient) performRequest(method string, uri string, data string) (string, string) {
 	token := c.buildSasToken(uri)
-	log.Debug("The SaStoken is [%s]", token)
+	log.Info("The SaStoken is [%s]", token)
 	//log.("%s https://%s\n", method, uri)
 	//log.Printf(data)
 	req, _ := http.NewRequest(method, "https://"+uri, bytes.NewBufferString(data))
