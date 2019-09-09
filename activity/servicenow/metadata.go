@@ -7,7 +7,10 @@ type Settings struct {
 }
 
 type Input struct {
-	AnInput string `md:"anInput,required"`
+	AnInstanceName string `md:"anInstanceName,required"`,
+	AnUsername string `md:"anUsername,required"`,
+	AnPassword string `md:"anPassword,required"`,
+
 }
 
 func (r *Input) FromMap(values map[string]interface{}) error {

@@ -1,4 +1,4 @@
-package sample
+package serviceno
 
 import (
 	"github.com/project-flogo/core/activity"
