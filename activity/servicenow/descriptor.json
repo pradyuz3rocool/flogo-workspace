@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "title": "ServiceNow Activity",
   "description": "Activity to perform Servicenow api operations",
-  "homepage": "https://github.com/pradyuz3rocool/flogo-workspace/activity/servicenow",
+  "homepage": "https://github.com/pradyuz3rocool/flogo-workspace/tree/master/activity/servicenow",
   "settings": [
     {
       "name": "aSetting",
