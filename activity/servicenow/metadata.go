@@ -1,4 +1,4 @@
-package sample
+package servicenow
 
 import "github.com/project-flogo/core/data/coerce"
 

@@ -1,4 +1,4 @@
-package sample
+package servicenow
 
 import (
 	"testing"

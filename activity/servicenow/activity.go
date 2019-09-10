@@ -1,4 +1,4 @@
-package serviceno
+package servicenow
 
 import (
 	"github.com/project-flogo/core/activity"
